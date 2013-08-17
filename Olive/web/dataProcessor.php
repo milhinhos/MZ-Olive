@@ -24,7 +24,7 @@ $nColunas = 0;
 
 
 foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
-		foreach ($worksheet->getRowIterator() as $row) {
+	foreach ($worksheet->getRowIterator() as $row) {
 		//echo 'RN: ' . $row->getRowIndex() . "\r\n";
 		$nLinhas++;
 		$nColunas=0;
@@ -35,7 +35,7 @@ foreach ($objPHPExcel->getWorksheetIterator() as $worksheet) {
 			if ($nLinhas==1) {
 				array_push($nomes,$cell->getCalculatedValue());
 				//break;
-				
+
 			}
 			else{
 				array_push($dados,$nomes[$nColunas],$cell->getCalculatedValue());

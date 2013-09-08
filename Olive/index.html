@@ -3,48 +3,19 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="style/default.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="style/jquery.jqplot.css" media="screen" />
+		<script type="text/javascript" src="js/d3.v3.min.js"></script>
+		<script type="text/javascript" src="js/processa_dados.js"></script>
 		<script type="text/javascript" src="js/loader.js"></script>
-		<script type="text/javascript" src="js/Store.js"></script>
-		<script type="text/javascript" src="js/FileAPI.js"></script>
-		<script type="text/javascript" src="js/Grafico.js"></script>
-		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="js/excanvas.js"></script>
-		<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
-		<!-- <script language="javascript" type="text/javascript" src="plugins/jqplot.barRenderer.min.js"></script>
-		<script language="javascript" type="text/javascript" src="plugins/jqplot.highlighter.min.js"></script>
-		<script language="javascript" type="text/javascript" src="plugins/jqplot.cursor.min.js"></script>
-		<script language="javascript" type="text/javascript" src="plugins/jqplot.dateAxisRenderer.min.js"></script>-->
-		<!-- <script language="javascript" type="text/javascript" src="plugins/jqplot.dragable.min.js"></script>-->
+		
+		
 		<title>Data Statisticas</title>
 	</head>
 	<body>
-		<div id="wrap">
-			<h1>Choose (multiple) files or drag them onto drop zone below</h1>
-			<form action="" method="post" enctype="multipart/form-data">
-				<input type="file" id="fileField" name="fileField" multiple />
-			</form>
-			<div id="fileDrop">
-				<p>
-					Drop files here
-				</p>
-			</div>
-			<div id="files">
-				<h2>File list</h2>
-				<a id="reset" href="#" title="Remove all files from list">Clear list</a>
-				<ul id="fileList"></ul>
-				<a id="upload" href="#" title="Upload all files in list">Upload files</a>
-			</div>
-			<br/>
-			<br/>
-			<div id="graphics">
-				<div id="graphlabel">
-					
-				</div>
-				<div id="graphicshow">
-					<!--<h2>Análise Gráfica <br/></h2>-->
-				</div>
-			</div>
-		</div>
+		<input type="file" id="files" name="files[]" multiple />
+		<output id="list"></output>
+		
+		<script>
+		  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		</script>
 	</body>
 </html>

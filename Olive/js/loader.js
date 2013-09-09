@@ -1,4 +1,4 @@
-function handleFileSelect(evt) {
+function handleImageFileSelect(evt) {
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
@@ -26,4 +26,36 @@ function handleFileSelect(evt) {
       reader.readAsDataURL(f);
     }
   }
+
+function handleDataFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // just gets the first file
+    var message='';
+    var file=files[0];
+    if ('name' in file) {
+        message += "name: " + file.name + "<br />";
+    }
+    else {
+        message += "name: " + file.fileName + "<br />";
+    }
+    if ('size' in file) {
+        message += "size: " + file.size + " bytes <br />";
+    }
+    else {
+        message += "size: " + file.fileSize + " bytes <br />";
+    }
+    if ('mediaType' in file) {
+        message += "type: " + file.mediaType + "<br />";
+    }
+
+    
+    var info = document.getElementById ("info");
+    info.innerHTML = message;
+    
+    processa_dados(files[0]);
+    
+  }
+
+
 

@@ -3,7 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link rel="stylesheet" type="text/css" href="style/default.css" media="screen" />
-		<script type="text/javascript" src="js/d3.v3.min.js"></script>
+		<script type="text/javascript" src="js/d3.v3.js"></script>
+		<script type="text/javascript" src="js/utilities.js"></script>
 		<script type="text/javascript" src="js/processa_dados.js"></script>
 		<script type="text/javascript" src="js/loader.js"></script>
 		
@@ -13,9 +14,11 @@
 	<body>
 		<input type="file" id="files" name="files[]" multiple />
 		<output id="list"></output>
+		 <div id="svg"></div>
+		 <div id="info" style="margin-top:30px"></div>
 		
 		<script>
-		  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		  document.getElementById('files').addEventListener('change', handleDataFileSelect, false);
 		</script>
 	</body>
 </html>

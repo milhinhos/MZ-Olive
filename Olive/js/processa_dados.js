@@ -33,14 +33,15 @@ function processa_dados(file)
     
     xhr.onload = function(outEvent){
     	var info=document.getElementById("info");
-    	if(xhr.status==200){
+    	/*if(xhr.status==200){
     		info.innerHTML=xhr.responseText;
        	}else
        	{
        		info.innerHTML="ERRO: O Capitão Nascimento disse: "+xhr.status+" <br\/>";
-       	}
+       	}*/
+    	info.innerHTML=xhr.responseText;
     	var filename=clean_r_answer(xhr.responseText);
-    	processa(filename);
+    	//processa(filename);
     };
     
     
@@ -54,7 +55,7 @@ function processa_dados(file)
 function processa(filename)
 {
 	processa_os_dados(filename);
-	//processa_novos_dados(filename);
+	processa_novos_dados(filename);
 }
 
 function processa_os_dados(file)
@@ -94,16 +95,15 @@ function processa_os_dados(file)
 
 function processa_novos_dados(file)
 {
-	//d3.text(file, function(datasetText) {
+	d3.text(file,function(dt){
 		var dsv=d3.dsv(";","text/plain");
-		var parsedCSV = dsv.parse(file,function(d){
-		var valores = d3.entries(parsedCSV);
-		console.log(valores);
-			
-			
-			
+		var parsedCSV = dsv.parse(dt);
 		
-		
-		
-	});
+		d3.forEach(function(d)
+		{
+			
+			console.log(d);
+		});
+	});	
 }
+			

@@ -2,9 +2,9 @@ function init()
 {
 
     //setup the svg
-    var svg = d3.select("#svg")
+    var svg = d3.select("#svg_data")
         .attr("width", w+100)
-        .attr("height", h+100)
+        .attr("height", h+10)
     console.log("svg", svg)
     svg.append("svg:rect")
         .attr("width", "100%")
@@ -40,8 +40,8 @@ function processa_dados(file)
        		info.innerHTML="ERRO: O Capitão Nascimento disse: "+xhr.status+" <br\/>";
        	}
     	var filename=clean_r_answer(xhr.responseText);
-    	processa_os_dados(filename);
-    }
+    	processa(filename);
+    };
     
     
     xhr.setRequestHeader("Cache-Control", "no-cache");
@@ -51,13 +51,20 @@ function processa_dados(file)
 }
 
 
+function processa(filename)
+{
+	processa_os_dados(filename);
+	//processa_novos_dados(filename);
+}
+
 function processa_os_dados(file)
 {
 	d3.text(file, function(datasetText) {
 
-		var parsedCSV = d3.csv.parseRows(datasetText);
+		var dsv=d3.dsv(";","text/plain");
+		var parsedCSV = dsv.parseRows(datasetText);
 
-		var sampleHTML = d3.select("#svg")
+		var sampleHTML = d3.select("#svg_data")
 		    .append("table")
 		    .style("border-collapse", "collapse")
 		    .style("border", "2px black solid")
@@ -75,6 +82,28 @@ function processa_os_dados(file)
 		    .on("mouseout", function(){d3.select(this).style("background-color", "white")})
 		    .text(function(d){return d;})
 		    .style("font-size", "12px");
+		
+		
+				
 		});
+	
+	
+	
 		 
+}
+
+function processa_novos_dados(file)
+{
+	//d3.text(file, function(datasetText) {
+		var dsv=d3.dsv(";","text/plain");
+		var parsedCSV = dsv.parse(file,function(d){
+		var valores = d3.entries(parsedCSV);
+		console.log(valores);
+			
+			
+			
+		
+		
+		
+	});
 }

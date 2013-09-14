@@ -34,7 +34,7 @@ f_datatable_read<-function()
 	}
 	flush(ficheiro)
 	close(ficheiro)
-	f_datatable_read<-read.table(webfilename,sep=';',header=TRUE)
+	f_datatable_read<-read.table(filename,sep=';',header=TRUE)
 	#print(webfilename)
 }
 

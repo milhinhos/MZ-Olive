@@ -39,9 +39,11 @@ function processa_dados(file)
        	{
        		info.innerHTML="ERRO: O Capitão Nascimento disse: "+xhr.status+" <br\/>";
        	}*/
-    	info.innerHTML=xhr.responseText;
-    	var filename=clean_r_answer(xhr.responseText);
-    	//processa(filename);
+    	
+    	var answer=clean_r_answer(xhr.responseText);
+    	//info.innerHTML=answer;
+    	
+    	processa(answer);
     };
     
     
@@ -52,11 +54,75 @@ function processa_dados(file)
 }
 
 
-function processa(filename)
+function processa(data)
 {
-	processa_os_dados(filename);
-	processa_novos_dados(filename);
+	//processa_os_dados(filename);
+	//processa_novos_dados(filename);
+	var dados=processa_tabela_dados(data);
+	alert(dados);
+	desenha_tabela(dados);
 }
+
+function processa_tabela_dados(datastring){
+	var proc_data = datastring;
+	
+	
+	console.log(proc_data);
+	var chaves=[];
+	var novosdados=jQuery.parseJSON(proc_data);
+	var datamodel=[];
+	
+	for(var k1 in novosdados){
+		var v1 = novosdados[k1];
+		var obj={};
+		var i=0;
+		for(var k2 in v1){
+			v2=v1[k2];
+			obj["id"]=k1;
+			obj["x"]=i;
+			obj["valor"]=v2;
+			console.log("a acrescentar: "+ k1+"  "+i+"  "+v2);
+			datamodel.push(obj);
+			i++;
+		}
+		
+	};
+	
+	return datamodel;
+	
+}
+
+
+function desenha_tabela(dados)
+{
+	for(var a in dados){
+		console.log(a);
+		var b=dados[a];
+		for(var c in b){
+			console.log(c+"   "+b[c]);
+		}
+	}
+	
+	var sampleHTML = d3.select("#svg_data")
+    .append("table")
+    .style("border-collapse", "collapse")
+    .style("border", "2px black solid")
+
+    .selectAll("tr")
+    .data(dados)
+    .enter().append("tr")
+
+    .selectAll("td")
+    .data(function(d){return d;})
+    .enter().append("td")
+    .style("border", "1px black solid")
+    .style("padding", "5px")
+    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")})
+    .on("mouseout", function(){d3.select(this).style("background-color", "white")})
+    .text(function(d){return d;})
+    .style("font-size", "12px");
+}
+
 
 function processa_os_dados(file)
 {

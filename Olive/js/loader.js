@@ -1,29 +1,61 @@
-window.onload = function () {
-    if (typeof FileReader == "undefined") alert ("Sorry your browser does not support the File API and this demo will not work for you");
-    FileAPI = new FileAPI(
-        document.getElementById("fileList"),
-        document.getElementById("fileDrop"),
-        document.getElementById("fileField")
-    );
-    FileAPI.init();
+function handleImageFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      // Only process image files.
+      if (!f.type.match('image.*')) {
+        continue;
+      }
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+function handleDataFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+
+    // just gets the first file
+    var message='';
+    var file=files[0];
+    if ('name' in file) {
+        message += "name: " + file.name + "<br />";
+    }
+    else {
+        message += "name: " + file.fileName + "<br />";
+    }
+    if ('size' in file) {
+        message += "size: " + file.size + " bytes <br />";
+    }
+    else {
+        message += "size: " + file.fileSize + " bytes <br />";
+    }
+    if ('mediaType' in file) {
+        message += "type: " + file.mediaType + "<br />";
+    }
+
     
-   
+    var info = document.getElementById ("info");
+    info.innerHTML = message;
     
-    var reset = document.getElementById("reset");
-    reset.onclick = FileAPI.clearList;
-    var upload = document.getElementById("upload");
-    upload.onclick = FileAPI.uploadQueue;
+    processa_dados(files[0]);
     
-    Grafico=new Grafico();
-    Grafico.init();
-    
-   /* var gr = new Grafico (null);
-    gr.init();
-    gr.setData();
-    gr.mostraGrafico();
-        
-   var dados = [[1, 2],[3,5.12],[5,13.1],[7,33.6],[9,85.9],[11,219.9]];
-    $.each(dados, function(index, val) {
-    	$('#tabela').append('<tr><td>'+val[0]+'</td><td>'+val[1]+'</td></tr>');
-  });*/
-}
+  }
+
+
+

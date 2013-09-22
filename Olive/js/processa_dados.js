@@ -105,10 +105,6 @@ function desenha_tabela(dados)
     .style("border-collapse", "collapse")
     .style("border", "2px black solid")
 
-    //.selectAll("tr")
-    //.data(dados)
-    
-
     .selectAll("tr")
     .data(dados)
     .enter().append("tr")
@@ -125,57 +121,68 @@ function desenha_tabela(dados)
 
 function desenha_grafico(dataset)
 {
-	dataset2=[{"label":"1990", "value":16}, 
-     {"label":"1991", "value":56}, 
-     {"label":"1992", "value":7},
-     {"label":"1993", "value":77},
-     {"label":"1994", "value":22},
-     {"label":"1995", "value":16},
-     ];
+		
+	var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
 	
-	var width=500,height=500;
-	var maxv,minv,wfact,hfact,wgap,hgap;
+	var width=800,height=600;
+	var maxv,minv,wfact,hfact,wgap,hgap,varsize;
+	var h_margin_bottom, h_margin_top;
 	
 	//dataset=[10,23,43,2,6,24];
-	
 	console.log(" a desenhar gráfico ... ");
 	var chart = d3.select("#svg_graph").append("svg")
 		.attr("class","chart")
-		.attr("width",420)
-		.attr("heigth",300);
+		.attr("width",width)
+		.attr("height",height);
 	
 	
 	/*
 	 * Bar char specific graphics
 	 */
 	// define the maximum value
-	wgap=50;
-	maxv = d3.max(dataset,function(d){
-		return d.valor
-	});
+		
+	wgap=10;
+	hgap=10;
+	h_margin_bottom=10;
+	h_margin_top=10;
+	barsize=10;
+	maxv = Math.round(d3.max(dataset,function(d){
+		return d.valor;
+	}));
 	
-	minv = d3.min(dataset,function(d){
-		return d.valor
-	});
+	minv = Math.round(d3.min(dataset,function(d){
+		return d.valor;
+	}));
 	
 	console.log(minv+" "+maxv);
+	console.log(typeof(minv));
+	console.log(typeof(maxv));
 	var x = d3.scale.linear()
 		.domain([minv-wgap, maxv+wgap])
-	    .range(["0", "420"]);
+	    .range(["0", "100%"]);
+	
+	var y = d3.scale.linear()
+		.domain(d3.range(dataset.length))
+		.rangeBands([h_margin_bottom,height-h_margin_top],0.5);
 	//wfact=500/(maxv+wgap);
+	
+	// nest the data, before create the graph
+	//dataset = d3.nest().key(function(d){ return d.id;}).entries(dataset);
 	
 	chart.selectAll("rect")
 		.data(dataset)
 	   .enter().append("rect")
 	   .attr("y",function(d,i){
-		   return i*20;
+		   return i*barsize;
 	   })
-		.attr("width",x)
-		.attr("height",20);
-	     //.style("width", x())
-	     //.text(function(d) { return d.valor; });
-	
-	
+		.attr("width",function(d){return x(d.valor);})
+		.attr("height",barsize)
+	     .style("fill", function(d){
+	    	 return color(d.id);
+	     })
+	     .text(function(d) { return d.valor; });
 	
 }
 
@@ -356,56 +363,3 @@ function processa(data)
 
 
 
-
-
-
-
-function processa_os_dados(file)
-{
-	d3.text(file, function(datasetText) {
-
-		var dsv=d3.dsv(";","text/plain");
-		var parsedCSV = dsv.parseRows(datasetText);
-
-		var sampleHTML = d3.select("#svg_data")
-		    .append("table")
-		    .style("border-collapse", "collapse")
-		    .style("border", "2px black solid")
-
-		    .selectAll("tr")
-		    .data(parsedCSV)
-		    .enter().append("tr")
-
-		    .selectAll("td")
-		    .data(function(d){return d;})
-		    .enter().append("td")
-		    .style("border", "1px black solid")
-		    .style("padding", "5px")
-		    .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")})
-		    .on("mouseout", function(){d3.select(this).style("background-color", "white")})
-		    .text(function(d){return d;})
-		    .style("font-size", "12px");
-		
-		
-				
-		});
-	
-	
-	
-		 
-}
-
-function processa_novos_dados(file)
-{
-	d3.text(file,function(dt){
-		var dsv=d3.dsv(";","text/plain");
-		var parsedCSV = dsv.parse(dt);
-		
-		d3.forEach(function(d)
-		{
-			
-			console.log(d);
-		});
-	});	
-}
-			

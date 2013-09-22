@@ -198,3 +198,8 @@ form {
    margin: 1px;
    color: white;
  }
+ 
+.chart rect {
+	stroke: white;
+   fill: steelblue;
+ }
